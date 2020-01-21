@@ -9,6 +9,6 @@
 
 * Run this project as the Administrator user:
 ```
-Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/Enablessh_user_and_key.ps1
+Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
 .\Enablessh_user_and_key.ps1
 ```
