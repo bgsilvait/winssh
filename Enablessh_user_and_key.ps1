@@ -1,10 +1,15 @@
+param(
+    [Parameter(Mandatory=$False)][string]$RunMode = "Test1"   
+    )
+
+
 # Common functions
 # ---------------------------------------------------------------------------------------
 
 Function is_elevated{
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
     [Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-warning "This script requires elevated privileges to change files and Install Windows Features."
+        Write-warning "This script requires elevated privileges to change Install Windows Features and change files."
         Write-Host "Please re-launch as Administrator." -foreground "red" -background "black"
         break
     }
@@ -24,4 +29,20 @@ Function install_ssh{
         Write-Error "Fail to Install SSHd"
         break
     }
+}
+
+Function install{
+    is_elevated
+    install_ssh
+    
+
+}
+
+if ($RunMode -eq "Test1"){
+    Write-Host "Running Default(Test1) Mode" -foregroundcolor "blue"
+    install
+
+} else {
+    Write-Host "You need to specify either Test1, EnableDebug or DisableDebug RunMode" -ForegroundColor "red" 
+    Break
 }
