@@ -10,7 +10,7 @@ Function is_elevated{
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
     [Security.Principal.WindowsBuiltInRole] "Administrator")) {
         Write-warning "This script requires elevated privileges to change Install Windows Features and change files."
-        Write-Host "Please re-launch as Administrator." -foreground "red" -background "black"
+        Write-Host "Please re-launch the Powershell as Administrator." -foreground "red" -background "black"
         break
     }
 }
@@ -39,7 +39,7 @@ Function install{
 }
 
 if ($RunMode -eq "Test1"){
-    Write-Host "Running Default(Test1) Mode" -foregroundcolor "blue"
+    Write-Host "Running Default(Test1) Mode" -foregroundcolor "green"
     install
 
 } else {
