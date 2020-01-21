@@ -39,7 +39,7 @@ Function install{
 }
 
 if ($RunMode -eq "Test1"){
-    Write-Host "Running Default(Test1) Mode" -foregroundcolor "green"
+    Write-Host "Running Default(Test1) Mode" -background "black"
     install
 
 } else {
