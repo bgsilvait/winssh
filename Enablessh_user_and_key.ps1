@@ -4,7 +4,7 @@ param(
 
 
 # Common functions
-# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------#
 
 Function is_elevated{
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
@@ -32,9 +32,61 @@ Function install_ssh{
     }
 }
 
+# Security Settings
+# ---------------------------------------------------------------------------------------#
+
+Function add_key{
+    try {
+        $key = "$(Invoke-RestMethod -uri  http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key)"
+        add-Content -Path 'C:\ProgramData\ssh\administrators_authorized_keys' -Value $key
+        $acl = Get-Acl C:\ProgramData\ssh\administrators_authorized_keys
+        $acl.SetAccessRuleProtection($true, $false)
+        $administratorsRule = New-Object system.security.accesscontrol.filesystemaccessrule("Administrators","FullControl","Allow")
+        $systemRule = New-Object system.security.accesscontrol.filesystemaccessrule("SYSTEM","FullControl","Allow")
+        $acl.SetAccessRule($administratorsRule)
+        $acl.SetAccessRule($systemRule)
+        $acl | Set-Acl
+        }
+        catch {
+            Write-Error "Fail to set ssh key"
+            break
+        }
+    }
+
+    Function add_useradm{
+        try {
+            New-LocalUser -Name "ec2-user" -Description "Description of this account." -NoPassword
+            Add-LocalGroupMember -Group "Administrators" -Member "ec2-user"
+            $Filepath = "C:\ProgramData\ssh\sshd_config"
+            $File = (Get-Content "C:\ProgramData\ssh\sshd_config")
+            IF($File -match "#PasswordAuthentication yes"){
+            $File -Replace "#PasswordAuthentication yes","PasswordAuthentication no" | Set-Content $Filepath}
+        }
+        catch {
+            Write-Error "Fail to Create ec2-user"
+            break
+        }
+    }
+
+    Function disable_password_auth{
+        try {
+            $Filepath = "C:\ProgramData\ssh\sshd_config"
+            $File = (Get-Content "C:\ProgramData\ssh\sshd_config")
+            IF($File -match "#PasswordAuthentication yes"){
+            $File -Replace "#PasswordAuthentication yes","PasswordAuthentication no" | Set-Content $Filepath}
+        }
+        catch {
+            Write-Error "Fail to modify sshd_config file"
+            break
+        }
+    }
+
 Function install{
     is_elevated
     install_ssh
+    add_key
+    add_useradm
+    disable_password_auth
     
 
 }
