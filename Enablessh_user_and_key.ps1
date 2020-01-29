@@ -126,6 +126,11 @@ Function full{
     
 }
 
+Function full2{
+    choco
+    
+}
+
 if ($RunMode -eq "default"){
     Write-Host "Running Default Mode" -foregroundcolor "green"
     install
@@ -135,6 +140,9 @@ if ($RunMode -eq "default"){
 } elseif ($RunMode -eq "full"){
     Write-Host "RUnning Full Mode" -foregroundcolor "blue"
     full
+} elseif ($RunMode -eq "full2"){
+    Write-Host "RUnning Full2 Mode" -foregroundcolor "blue"
+    full2
 } else {
     Write-Host "You need to specify either default, key or full RunMode" -ForegroundColor "red" 
     Break
