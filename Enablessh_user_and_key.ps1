@@ -1,5 +1,5 @@
 param(
-    [Parameter(Mandatory=$False)][string]$RunMode = "Test1"   
+    [Parameter(Mandatory=$False)][string]$RunMode = "default"   
     )
 
 
@@ -55,25 +55,23 @@ Function add_key{
 
     Function add_useradm{
         try {
-            New-LocalUser -Name "ec2-user" -Description "Description of this account." -NoPassword
+            New-LocalUser -Name "ec2-user" -Description "ec2-user without password." -NoPassword
             Add-LocalGroupMember -Group "Administrators" -Member "ec2-user"
-            $Filepath = "C:\ProgramData\ssh\sshd_config"
-            $File = (Get-Content "C:\ProgramData\ssh\sshd_config")
-            IF($File -match "#PasswordAuthentication yes"){
-            $File -Replace "#PasswordAuthentication yes","PasswordAuthentication no" | Set-Content $Filepath}
         }
         catch {
-            Write-Error "Fail to Create ec2-user"
+            Write-Error "Fail to Create ec2-user without password"
             break
         }
     }
 
     Function disable_password_auth{
         try {
+            Stop-service sshd
             $Filepath = "C:\ProgramData\ssh\sshd_config"
             $File = (Get-Content "C:\ProgramData\ssh\sshd_config")
             IF($File -match "#PasswordAuthentication yes"){
             $File -Replace "#PasswordAuthentication yes","PasswordAuthentication no" | Set-Content $Filepath}
+            Start-Service sshd
         }
         catch {
             Write-Error "Fail to modify sshd_config file"
@@ -81,21 +79,48 @@ Function add_key{
         }
     }
 
+    Function choco{
+        try {
+            Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+        }
+        catch {
+            Write-Error "fail to install chocolatey"
+            break
+        }
+    }
+
+
 Function install{
     is_elevated
     install_ssh
+}
+
+Function key_withoutpass{
+    install
     add_key
     add_useradm
     disable_password_auth
-    
-
+   
 }
 
-if ($RunMode -eq "Test1"){
-    Write-Host "Running Default(Test1) Mode" -foregroundcolor "green"
+Function full{
     install
+    key_withoutpass
+    choco
+    
+}
 
+if ($RunMode -eq "default"){
+    Write-Host "Running Default Mode" -foregroundcolor "green"
+    install
+} elseif ($RunMode -eq "key"){
+    Write-Host "Running Key Mode" -foregroundcolor "blue"
+    key_withoutpass
+} elseif ($RunMode -eq "full"){
+    Write-Host "RUnning Full Mode" -foregroundcolor "blue"
+    full
 } else {
-    Write-Host "You need to specify either Test1, EnableDebug or DisableDebug RunMode" -ForegroundColor "red" 
+    Write-Host "You need to specify either default, key or full RunMode" -ForegroundColor "red" 
     Break
 }

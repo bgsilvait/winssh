@@ -20,8 +20,17 @@ OPTIONS:
    -RunMode  Has three parameters  1) default, 2) key 3) full:
              default       Install sshd for access the Windows using user and password.
              key           key   Install sshd, creates a new user "ec2-user", disable password authentication.
-             full          Runs the Key mode + chocolatey + vim + awscli + curl
+             full          Runs the Key mode + chocolatey
 
 Enable user + key withou password: 
 Enablessh_user_and_key.ps1 -RunMode key 
+```
+* For Userdata:
+```
+<powershell>
+Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/test/Enablessh_user_and_key.ps1
+.\Enablessh_user_and_key.ps1 -RunMode full
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+choco install awscli vim curl -y
+</powershell>
 ```
