@@ -92,6 +92,7 @@ Function add_key{
 
     Function extras{
         try {
+            powershell
             choco install awscli -y 
             choco install vim -y 
             choco install curl -y
