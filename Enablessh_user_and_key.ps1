@@ -90,19 +90,6 @@ Function add_key{
         }
     }
 
-    Function extras{
-        try {
-            if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
-           # Your script here
-            choco install awscli vim curl -dvfy 
-            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-        }
-        catch {
-            Write-Error "fail to install chocolatey packages"
-            break
-        }
-    }
-
 
 Function install{
     is_elevated
@@ -124,11 +111,6 @@ Function full{
     
 }
 
-Function full2{
-    choco
-    
-}
-
 if ($RunMode -eq "default"){
     Write-Host "Running Default Mode" -foregroundcolor "green"
     install
@@ -138,9 +120,6 @@ if ($RunMode -eq "default"){
 } elseif ($RunMode -eq "full"){
     Write-Host "RUnning Full Mode" -foregroundcolor "blue"
     full
-} elseif ($RunMode -eq "full2"){
-    Write-Host "RUnning Full2 Mode" -foregroundcolor "blue"
-    full2
 } else {
     Write-Host "You need to specify either default, key or full RunMode" -ForegroundColor "red" 
     Break
