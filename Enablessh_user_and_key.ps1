@@ -92,7 +92,7 @@ Function add_key{
 
     Function extras{
         try {
-            powershell
+            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
             choco install awscli -y 
             choco install vim -y 
             choco install curl -y
