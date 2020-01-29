@@ -93,9 +93,7 @@ Function add_key{
     Function extras{
         try {
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-            choco install awscli -y 
-            choco install vim -y 
-            choco install curl -y
+            choco install awscli vim curl -y 
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
         }
         catch {
