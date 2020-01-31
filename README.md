@@ -34,3 +34,7 @@ Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercont
 choco install vim curl awscli -y
 </powershell>
 ```
+* For access the Windows Server:
+```
+ssh -i key.pem ec2-user@ip
+```
