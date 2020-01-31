@@ -28,9 +28,9 @@ Enablessh_user_and_key.ps1 -RunMode key
 * For Userdata:
 ```
 <powershell>
-Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/test/Enablessh_user_and_key.ps1
+Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
 .\Enablessh_user_and_key.ps1 -RunMode full
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-choco install awscli vim curl -y
+&$PSHOME\profile.ps1
+choco install vim curl awscli -y
 </powershell>
 ```
