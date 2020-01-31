@@ -20,7 +20,7 @@ OPTIONS:
    -RunMode  Has three parameters  1) default, 2) key 3) full:
              default       Install sshd for access the Windows using user and password.
              key           key   Install sshd, creates a new user "ec2-user", disable password authentication.
-             full          Runs the Key mode + chocolatey
+             full          Runs the Key mode + powerash(choco + bash aliases)
 
 Enable user + key withou password: 
 Enablessh_user_and_key.ps1 -RunMode key 
