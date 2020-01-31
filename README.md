@@ -10,7 +10,7 @@
 * Run this project as the Administrator user:
 ```
 Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
-.\Enablessh_user_and_key.ps1
+.\Enablessh_user_and_key.ps1 -RunMode full
 ```
 ```
 # Enablessh_user_and_key.ps1
@@ -20,7 +20,7 @@ OPTIONS:
    -RunMode  Has three parameters  1) default, 2) key 3) full:
              default       Install sshd for access the Windows using user and password.
              key           key   Install sshd, creates a new user "ec2-user", disable password authentication.
-             full          Runs the Key mode + chocolatey
+             full          Runs the Key mode + powerash(choco + bash aliases)
 
 Enable user + key withou password: 
 Enablessh_user_and_key.ps1 -RunMode key 
@@ -30,7 +30,7 @@ Enablessh_user_and_key.ps1 -RunMode key
 <powershell>
 Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
 .\Enablessh_user_and_key.ps1 -RunMode full
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-choco install awscli vim curl -y
+&$PSHOME\profile.ps1
+choco install vim curl awscli -y
 </powershell>
 ```

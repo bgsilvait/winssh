@@ -79,17 +79,16 @@ Function add_key{
         }
     }
 
-    Function choco{
+    Function powerash{
         try {
-            Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+            Invoke-WebRequest -OutFile powerash.ps1 https://raw.githubusercontent.com/bgsilvait/powerash/master/powerash.ps1
+            .\powerash.ps1
         }
         catch {
-            Write-Error "fail to install chocolatey"
+            Write-Error "Fail to run powerash"
             break
         }
     }
-
 
 Function install{
     is_elevated
@@ -105,9 +104,8 @@ Function key_withoutpass{
 }
 
 Function full{
-    install
     key_withoutpass
-    choco
+    powerash
     
 }
 
