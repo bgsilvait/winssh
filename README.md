@@ -1,40 +1,44 @@
-# 
+# Enable SSH Access on Windows Server.
+
+## Introduction
+
+**winssh** is a Powershell script that installs and configures sshd service on Windows Server. You can choose 3 different **RunModes**:
+
+- default
+
+Install sshd for access Windows Server using user and password for authentication.
+
+- key
+
+Install sshd, creates a new local user "ec2-user" without password, adds "ec2-user" as Local Administrator, disable password authentication for ssh and adds the AWS Key pair used in the creation of EC2 as trust key for ssh.
+
+- full
+
+key mode + [powerash](https://github.com/bgsilvait/powerash)
 
 
+## Usage
 
-### <span style="font-family: times, serif; font-size:16pt; font-style:italic;"> winssh
+### In a powershell session:
 
-<span style="font-family: calibri, Garamond, 'Comic Sans MS' ;">Enable SSH to Access Windows Server.</span>
-
-
-* Run this project as the Administrator user:
+**Run this project as the Administrator user**
 ```
-Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
-.\Enablessh_user_and_key.ps1 -RunMode full
+iwr -o winssh.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/winssh.ps1
+.\winssh.ps1 -RunMode full
 ```
-```
-# Enablessh_user_and_key.ps1
-USAGE: Enablessh_user_and_key [ -RunMode =default|key|full ]
 
-OPTIONS:
-   -RunMode  Has three parameters  1) default, 2) key 3) full:
-             default       Install sshd for access the Windows using user and password.
-             key           key   Install sshd, creates a new user "ec2-user", disable password authentication.
-             full          Runs the Key mode + powerash(choco + bash aliases)
-
-Enable user + key withou password: 
-Enablessh_user_and_key.ps1 -RunMode key 
-```
-* For Userdata:
+### For AWS EC2 Userdata:
 ```
 <powershell>
-Invoke-WebRequest -OutFile Enablessh_user_and_key.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/Enablessh_user_and_key.ps1
-.\Enablessh_user_and_key.ps1 -RunMode full
+iwr -o winssh.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/winssh.ps1
+.\winssh.ps1 -RunMode full
 &$PSHOME\profile.ps1
 choco install vim curl awscli -y
 </powershell>
 ```
-* For access the Windows Server:
+
+## Access the Windows Server
+
 ```
 ssh -i key.pem ec2-user@ip
 ```
