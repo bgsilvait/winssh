@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**winssh** is a Powershell script that installs and configures sshd service on Windows Server. You can choose 3 different **RunModes**:
+**winssh** is a Powershell script that installs and configures sshd service on Windows Server(2019 and later versions are supported). You can choose 3 different **RunModes**:
 
 - default
 
