@@ -34,6 +34,7 @@ iwr -o winssh.ps1 https://raw.githubusercontent.com/bgsilvait/winssh/master/wins
 .\winssh.ps1 -RunMode full
 &$PSHOME\profile.ps1
 choco install vim curl awscli -y
+&$PSHOME\profile.ps1
 </powershell>
 ```
 
