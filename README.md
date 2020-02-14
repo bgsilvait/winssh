@@ -38,8 +38,14 @@ choco install vim curl awscli -y
 </powershell>
 ```
 
-## Access the Windows Server
+## Access the Windows Server key/full RunMode
 
 ```
 ssh -i key.pem ec2-user@ip
+```
+
+## Access the Windows Server default RunMode
+
+```
+ssh administrator@ip
 ```
