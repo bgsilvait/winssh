@@ -49,3 +49,9 @@ ssh -i key.pem ec2-user@ip
 ```
 ssh administrator@ip
 ```
+
+
+```console
+eksctl create cluster --name=eks-windows --ssh-access \
+--ssh-public-key=your_key_name --managed --region=us-east-1
+```
